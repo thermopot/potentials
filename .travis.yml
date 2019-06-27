@@ -23,9 +23,6 @@ matrix:
       deploy:
         provider: script
         script: 
-          - cd website
-          - git add -A
-          - git commit -m  "${TRAVIS_COMMIT_MESSAGE}" 
-          - git push
+          - bash ./ci/deploy.sh "${TRAVIS_COMMIT_MESSAGE}"
         on:
           branch: master  
