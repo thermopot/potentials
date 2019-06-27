@@ -60,7 +60,7 @@ for pot in get_list_of_potentials(potential_path=potential_path):
     for element in pot['species']:
         for k, v in get_list_of_protocols(protocol_path=protocol_path).items():
             slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-') + '.ipynb'
-            if slug not in os.listdir(website_path):
+            if slug not in os.listdir(os.path.join(website_path, pot['name'])):
                 apply_protocol(element=element, 
                                pot=pot, 
                                proc=v, 
@@ -93,8 +93,8 @@ for pot in get_list_of_potentials(potential_path=potential_path):
             working_dir = os.path.abspath(os.path.join(calculation_path, pot['name'], element, k))
             notebook=[os.path.join(working_dir, f) for f in os.listdir(working_dir) if f == 'plot.nbconvert.ipynb'][0]
             slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-') 
-            with open(os.path.join(website_path, slug + '.md'), 'w') as f:
+            with open(os.path.join(website_path, pot['name'], slug + '.md'), 'w') as f:
                 f.writelines(render_post(pot=pot, element=element, k=k, now=now, slug=slug, notebook=slug + '.ipynb'))           
-            shutil.copyfile(notebook, os.path.join(website_path, slug + '.ipynb'))
+            shutil.copyfile(notebook, os.path.join(website_path, pot['name'], slug + '.ipynb'))
 
 
