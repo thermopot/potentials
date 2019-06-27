@@ -96,7 +96,7 @@ for pot in get_list_of_potentials(potential_path=potential_path):
             slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-')
             os.makedirs(os.path.join(website_path, pot['name']), exist_ok=True)
             with open(os.path.join(website_path, pot['name'], slug + '.md'), 'w') as f:
-                f.writelines(render_post(pot=pot, element=element, k=k, now=now, slug=slug, notebook=slug + '.ipynb'))
+                f.writelines(render_post(pot=pot, element=element, k=k, now=now, slug=slug, notebook=os.path.join(pot['name'], slug + '.ipynb')))
             shutil.copyfile(notebook, os.path.join(website_path, pot['name'], slug + '.ipynb'))
 
 
