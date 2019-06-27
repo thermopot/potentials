@@ -93,9 +93,10 @@ for pot in get_list_of_potentials(potential_path=potential_path):
         for k, v in get_list_of_protocols(protocol_path=protocol_path).items():
             working_dir = os.path.abspath(os.path.join(calculation_path, pot['name'], element, k))
             notebook=[os.path.join(working_dir, f) for f in os.listdir(working_dir) if f == 'plot.nbconvert.ipynb'][0]
-            slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-') 
+            slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-')
+            os.makedirs(os.path.join(website_path, pot['name']), exist_ok=True)
             with open(os.path.join(website_path, pot['name'], slug + '.md'), 'w') as f:
-                f.writelines(render_post(pot=pot, element=element, k=k, now=now, slug=slug, notebook=slug + '.ipynb'))           
+                f.writelines(render_post(pot=pot, element=element, k=k, now=now, slug=slug, notebook=slug + '.ipynb'))
             shutil.copyfile(notebook, os.path.join(website_path, pot['name'], slug + '.ipynb'))
 
 
