@@ -20,11 +20,12 @@ matrix:
         - echo -e "[DEFAULT]\nTOP_LEVEL_DIRS = $PWD\nRESOURCE_PATHS = $PWD/pyiron-resources" > ~/.pyiron
       script:
         - python ci/run.py
-        - cd website
-        - git add -A
-        - git commit -m  "${TRAVIS_COMMIT_MESSAGE}" 
       deploy:
         provider: script
-        script: git push
+        script: 
+          - cd website
+          - git add -A
+          - git commit -m  "${TRAVIS_COMMIT_MESSAGE}" 
+          - git push
         on:
           branch: master  
