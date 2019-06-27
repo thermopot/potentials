@@ -60,7 +60,8 @@ for pot in get_list_of_potentials(potential_path=potential_path):
     for element in pot['species']:
         for k, v in get_list_of_protocols(protocol_path=protocol_path).items():
             slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-') + '.ipynb'
-            if slug not in os.listdir(os.path.join(website_path, pot['name'])):
+            pot_path = os.path.join(website_path, pot['name'])
+            if not os.path.exists(pot_path) or (os.path.exists(pot_path) and slug not in os.listdir(pot_path)):
                 apply_protocol(element=element, 
                                pot=pot, 
                                proc=v, 
