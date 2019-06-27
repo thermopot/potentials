@@ -16,6 +16,7 @@ matrix:
         # - pip install --pre --force-reinstall --no-dependencies pyiron 
         # - pip install --force-reinstall --no-dependencies git+https://github.com/pyiron/pyiron.git
         - git clone https://github.com/pyiron/pyiron-resources.git
+        - git clone https://github.com/thermopot/website.git
         - echo -e "[DEFAULT]\nTOP_LEVEL_DIRS = $PWD\nRESOURCE_PATHS = $PWD/pyiron-resources" > ~/.pyiron
         # - wget https://wiki.fysik.dtu.dk/gpaw-files/gpaw-setups-0.9.20000.tar.gz
         # - tar -xzf gpaw-setups-0.9.20000.tar.gz
