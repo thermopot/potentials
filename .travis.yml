@@ -12,14 +12,19 @@ matrix:
         - conda info -a
         - conda config --set always_yes yes --set changeps1 no
         - conda update -q conda
-        - conda install -y -c conda-forge lammps jupyter nbconvert pyiron lammps jinja2
-        # - pip install --pre --force-reinstall --no-dependencies pyiron 
-        # - pip install --force-reinstall --no-dependencies git+https://github.com/pyiron/pyiron.git
+        - conda install -y -c conda-forge lammps jupyter nbconvert pyiron jinja2
+        - git config --global user.email "${GH_EMAIL}"
+        - git config --global user.name "${GH_USER}"
         - git clone https://github.com/pyiron/pyiron-resources.git
-        - git clone https://github.com/thermopot/website.git
+        - git clone https://${GH_USER}:${GH_TOKEN}@github.com/thermopot/website.git
         - echo -e "[DEFAULT]\nTOP_LEVEL_DIRS = $PWD\nRESOURCE_PATHS = $PWD/pyiron-resources" > ~/.pyiron
-        # - wget https://wiki.fysik.dtu.dk/gpaw-files/gpaw-setups-0.9.20000.tar.gz
-        # - tar -xzf gpaw-setups-0.9.20000.tar.gz
-        # - export GPAW_SETUP_PATH=$PWD/gpaw-setups-0.9.20000
       script:
         - python ci/run.py
+        - cd website
+        - git add -A
+        - git commit -m  "${TRAVIS_COMMIT_MESSAGE}" 
+      deploy:
+        provider: script
+        script: git push
+        on:
+          branch: master  
