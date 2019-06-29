@@ -23,14 +23,13 @@ matrix:
         - echo $(git diff --name-only $TRAVIS_COMMIT_RANGE)
         - python ./.ci_support/run.py
       deploy:
-        provider: script
-        script: 
-          - bash ./.ci_support/deploy-master.sh "${TRAVIS_COMMIT_MESSAGE}"
-        on:
-          branch: master
-      deploy:
-        provider: script
-        script:
-          - bash ./.ci_support/deploy-testing.sh "${TRAVIS_COMMIT_MESSAGE}"
-        on:
-          condition: $TRAVIS_BRANCH != "master"
+        - provider: script
+          script: 
+            - bash ./.ci_support/deploy-master.sh "${TRAVIS_COMMIT_MESSAGE}"
+          on:
+            branch: master
+        - provider: script
+          script:
+            - bash ./.ci_support/deploy-testing.sh "${TRAVIS_COMMIT_MESSAGE}"
+          on:
+            condition: $TRAVIS_BRANCH != "master"
