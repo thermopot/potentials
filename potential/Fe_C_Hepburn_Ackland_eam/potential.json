@@ -1,0 +1,7 @@
+{
+ "config": ["pair_style eam/fs \n", "pair_coeff * * Fe-C_Hepburn_Ackland.eam.fs Fe C\n"], 
+ "filename": ["Fe-C_Hepburn_Ackland.eam.fs"], 
+ "model": "EAM", 
+ "name": "Fe_C_Hepburn_Ackland_eam", 
+ "species": ["Fe", "C"]
+}
