@@ -21,10 +21,16 @@ matrix:
         - echo -e "[DEFAULT]\nTOP_LEVEL_DIRS = $PWD\nRESOURCE_PATHS = $PWD/pyiron-resources" > ~/.pyiron
       script:
         - echo $(git diff --name-only $TRAVIS_COMMIT_RANGE)
-        - python ci/run.py
+        - python ./.ci_support/run.py
       deploy:
         provider: script
         script: 
-          - bash ./ci/deploy.sh "${TRAVIS_COMMIT_MESSAGE}"
+          - bash ./.ci_support/deploy-master.sh "${TRAVIS_COMMIT_MESSAGE}"
         on:
-          branch: master  
+          branch: master
+      deploy:
+        provider: script
+        script:
+          - bash ./.ci_support/deploy-testing.sh "${TRAVIS_COMMIT_MESSAGE}"
+        on:
+          condition: $TRAVIS_BRANCH != "master"
