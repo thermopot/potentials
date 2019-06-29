@@ -65,8 +65,8 @@ def apply_protocol(element, pot, proc, working_dir):
 for pot in get_list_of_potentials(potential_path=potential_path):
     for element in pot['species']:
         for k, v in get_list_of_protocols(protocol_path=protocol_path).items():
-            slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-') + '.ipynb'
-            pot_path = os.path.join(website_path, pot['name'])
+            slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-') + '.json'
+            pot_path = os.path.join(database_path, pot['name'])
             if not os.path.exists(pot_path) or (os.path.exists(pot_path) and slug not in os.listdir(pot_path)):
                 apply_protocol(element=element, 
                                pot=pot, 
