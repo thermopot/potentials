@@ -20,15 +20,15 @@ def get_list_of_potentials(potential_path):
         pot_dict = None
         for file in os.listdir(pot_dir):
             if '.json' in file:
-                os.makedirs(os.path.join(database_path, pot_dir), exist_ok=True)
+                os.makedirs(os.path.join(database_path, pot), exist_ok=True)
                 pot_file = os.path.join(pot_dir, file)
-                shutil.copyfile(pot_file, os.path.join(database_path, pot_dir, file))
+                shutil.copyfile(pot_file, os.path.join(database_path, pot, file))
                 with open(pot_file, 'r') as f: 
                     pot_dict = json.load(f)
         if pot_dict is not None:
             pot_dict['filename'] = [os.path.join(pot_dir, p) for p in pot_dict['filename']]
             for f in pot_dict['filename']:
-                shutil.copyfile(f, os.path.join(database_path, pot_dir, os.path.basename(f))) 
+                shutil.copyfile(f, os.path.join(database_path, pot, os.path.basename(f))) 
             pot_lst.append(pot_dict)
     return pot_lst
 
