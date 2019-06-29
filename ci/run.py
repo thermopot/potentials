@@ -10,6 +10,7 @@ potential_path = 'potential'
 protocol_path = 'protocol'
 calculation_path = 'calculation'
 website_path = 'website/content'
+database_path = 'database'
 
 
 def get_list_of_potentials(potential_path):
@@ -19,10 +20,15 @@ def get_list_of_potentials(potential_path):
         pot_dict = None
         for file in os.listdir(pot_dir):
             if '.json' in file:
-                with open(os.path.join(pot_dir, file), 'r') as f: 
+                os.makedirs(os.path.join(database_path, pot_dir), exist_ok=True)
+                pot_file = os.path.join(pot_dir, file)
+                shutil.copyfile(pot_file, os.path.join(database_path, pot_dir, file))
+                with open(pot_file, 'r') as f: 
                     pot_dict = json.load(f)
         if pot_dict is not None:
             pot_dict['filename'] = [os.path.join(pot_dir, p) for p in pot_dict['filename']]
+            for f in pot_dict['filename']:
+                shutil.copyfile(f, os.path.join(database_path, pot_dir, os.path.basename(f))) 
             pot_lst.append(pot_dict)
     return pot_lst
 
@@ -96,8 +102,13 @@ for pot in get_list_of_potentials(potential_path=potential_path):
                 notebook = [os.path.join(working_dir, f) for f in os.listdir(working_dir) if f == 'plot.nbconvert.ipynb'][0]
                 output_file = [os.path.join(working_dir, f) for f in os.listdir(working_dir) if f == 'output.json'][0]
                 slug = '-'.join([pot['name'], element, k]).lower().replace('_', '-')
+                
+                # store files for website
                 os.makedirs(os.path.join(website_path, pot['name']), exist_ok=True)
                 with open(os.path.join(website_path, pot['name'], slug + '.md'), 'w') as f:
                     f.writelines(render_post(pot=pot, element=element, k=k, now=now, slug=slug, notebook=os.path.join(pot['name'], slug + '.ipynb')))
                 shutil.copyfile(notebook, os.path.join(website_path, pot['name'], slug + '.ipynb'))
                 shutil.copyfile(output_file, os.path.join(website_path, pot['name'], slug + '.json'))
+
+                # store files for database 
+                shutil.copyfile(output_file, os.path.join(database_path, pot['name'], slug + '.json'))
