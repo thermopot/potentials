@@ -17,6 +17,7 @@ matrix:
         - git config --global user.name "${GH_USER}"
         - git clone https://github.com/pyiron/pyiron-resources.git
         - git clone https://${GH_USER}:${GH_TOKEN}@github.com/thermopot/website.git
+        - git clone https://${GH_USER}:${GH_TOKEN}@github.com/thermopot/database.git
         - echo -e "[DEFAULT]\nTOP_LEVEL_DIRS = $PWD\nRESOURCE_PATHS = $PWD/pyiron-resources" > ~/.pyiron
       script:
         - python ci/run.py
