@@ -20,6 +20,7 @@ matrix:
         - git clone https://${GH_USER}:${GH_TOKEN}@github.com/thermopot/database.git
         - echo -e "[DEFAULT]\nTOP_LEVEL_DIRS = $PWD\nRESOURCE_PATHS = $PWD/pyiron-resources" > ~/.pyiron
       script:
+        - echo $(git diff --name-only $TRAVIS_COMMIT_RANGE)
         - python ci/run.py
       deploy:
         provider: script
