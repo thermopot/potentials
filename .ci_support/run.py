@@ -65,8 +65,8 @@ def apply_protocol(element, pot, proc, working_dir):
     job_name = os.path.basename(script_directory)
     command = os.path.join(script_directory, "run.sh") + " " + \
               job_name + " " + \
-              os.path.join(working_dir, "input_file.json") + " " + \
-              os.path.join(working_dir, "output_file.json") + " " + \
+              os.path.join(working_dir, "input.json") + " " + \
+              os.path.join(working_dir, "output.json") + " " + \
               os.path.join(working_dir, "plot.nbconvert.ipynb")
     subprocess.check_output("export script_dir=" + script_directory + "; " + command,
                            cwd=working_dir,
