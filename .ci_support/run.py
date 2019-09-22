@@ -40,9 +40,9 @@ def get_list_of_protocols(protocol_path):
         proc_dict = {}
         for f in os.listdir(proc_dir): 
             if 'script.ipynb' == f: 
-                proc_dict['script'] = os.path.join(proc_dir, 'scirpts', f)
+                proc_dict['script'] = os.path.join(proc_dir, 'scripts', f)
             elif 'plot.ipynb' == f:
-                proc_dict['plot'] = os.path.join(proc_dir, 'scirpts', f)
+                proc_dict['plot'] = os.path.join(proc_dir, 'scripts', f)
         if len(proc_dict) > 0: 
             proc_lst[proc] = proc_dict
     return proc_lst
