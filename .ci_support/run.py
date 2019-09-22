@@ -62,13 +62,10 @@ def apply_protocol(element, pot, proc, working_dir):
         json.dump(input_dict, f)
     script = proc['script']
     script_directory = os.path.dirname(script)
-    job_name = os.path.basename(script_directory)
-    command = os.path.join(script_directory, "run.sh") + " " + \
-              job_name + " " + \
-              os.path.join(working_dir, "input.json") + " " + \
-              os.path.join(working_dir, "output.json") + " " + \
-              os.path.join(working_dir, "plot.nbconvert.ipynb")
-    subprocess.check_output("export script_dir=" + script_directory + "; " + command,
+    shutil.copytree(os.path.join(script_directory, 'envs'), working_dir)
+    shutil.copytree(os.path.join(script_directory, 'scripts'), working_dir)
+    shutil.copyfile(os.path.join(script_directory, 'Snakefile'), os.path.join(working_dir, 'Snakefile'))
+    subprocess.check_output("snakemake --use-conda",
                            cwd=working_dir,
                            shell=True)
 
