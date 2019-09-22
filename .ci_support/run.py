@@ -61,17 +61,16 @@ def apply_protocol(element, pot, proc, working_dir):
     with open(os.path.join(working_dir, 'input.json'), 'w') as f:
         json.dump(input_dict, f)
     script = proc['script']
-    shutil.copyfile(script, os.path.join(working_dir, os.path.basename(script)))
-    script_output = get_script_output(script=script)
-    subprocess.check_output('papermill "' + os.path.basename(script) + '" "' + os.path.basename(script_output) + '" -k "python3" -p input_file "input.json" -p output_file "output.json"',
-                            cwd=working_dir, 
-                            shell=True)
-    script = proc['plot']
-    shutil.copyfile(script, os.path.join(working_dir, os.path.basename(script)))
-    script_output = get_script_output(script=script)
-    subprocess.check_output('papermill "' + os.path.basename(script) + '" "' + os.path.basename(script_output) + '" -k "python3" -p input_file "output.json"',
-                            cwd=working_dir,    
-                            shell=True)
+    script_directory = os.path.dirname(script)
+    job_name = os.path.basename(script_directory)
+    command = os.path.join(script_directory, run.sh) + " " + \
+              job_name + " " + \
+              os.path.join(working_dir, "input_file.json") + " " + \
+              os.path.join(working_dir, "output_file.json") + " " + \
+              os.path.join(working_dir, "plot.nbconvert.ipynb")
+    subprocess.check_output("export script_dir=" + script_directory + "; " + command,
+                           cwd=working_dir,
+                           shell=True)
 
 
 for pot in get_list_of_potentials(potential_path=potential_path):
