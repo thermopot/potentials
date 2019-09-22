@@ -48,6 +48,11 @@ def get_list_of_protocols(protocol_path):
     return proc_lst
 
 
+def get_script_output(script):
+    script_ext_split = os.path.splitext(script)
+    return script_ext_split[0] + ".nbconvert" + script_ext_split[1]
+
+
 def apply_protocol(element, pot, proc, working_dir):
     os.makedirs(working_dir, exist_ok=True)
     input_dict = pot
@@ -55,11 +60,18 @@ def apply_protocol(element, pot, proc, working_dir):
     input_dict['element'] = element
     with open(os.path.join(working_dir, 'input.json'), 'w') as f:
         json.dump(input_dict, f)
-    for script in [proc['script'], proc['plot']]:
-        shutil.copyfile(script, os.path.join(working_dir, os.path.basename(script)))
-        subprocess.check_output('jupyter nbconvert --ExecutePreprocessor.timeout=9999999 --ExecutePreprocessor.kernel_name="python3" --to notebook --execute "' + os.path.basename(script) + '"', 
-                                cwd=working_dir, 
-                                shell=True)
+    script = proc['script']
+    shutil.copyfile(script, os.path.join(working_dir, os.path.basename(script)))
+    script_output = get_script_output(script=script)
+    subprocess.check_output('papermill "' + os.path.basename(script) + '" "' + os.path.basename(script_output) + '" -k "python3" -p input_file "input.json" -p output_file "output.json"',
+                            cwd=working_dir, 
+                            shell=True)
+    script = proc['plot']
+    shutil.copyfile(script, os.path.join(working_dir, os.path.basename(script)))
+    script_output = get_script_output(script=script)
+    subprocess.check_output('papermill "' + os.path.basename(script) + '" "' + os.path.basename(script_output) + '" -k "python3" -p input_file "output.json"',
+                            cwd=working_dir,    
+                            shell=True)
 
 
 for pot in get_list_of_potentials(potential_path=potential_path):
