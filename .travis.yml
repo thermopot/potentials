@@ -12,7 +12,7 @@ matrix:
         - conda info -a
         - conda config --set always_yes yes --set changeps1 no
         - conda update -q conda
-        - conda install -y -c conda-forge lammps jupyter nbconvert pyiron jinja2 papermill
+        - conda install -y -c conda-forge jinja2
         - git config --global user.email "${GH_EMAIL}"
         - git config --global user.name "${GH_USER}"
         - git clone https://github.com/pyiron/pyiron-resources.git
