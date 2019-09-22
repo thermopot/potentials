@@ -65,6 +65,7 @@ def apply_protocol(element, pot, proc, working_dir):
     shutil.copytree(os.path.join(script_directory, 'envs'), working_dir)
     shutil.copytree(os.path.join(script_directory, 'scripts'), working_dir)
     shutil.copyfile(os.path.join(script_directory, 'Snakefile'), os.path.join(working_dir, 'Snakefile'))
+    print(os.path.listdir(working_dir))
     subprocess.check_output("snakemake --use-conda",
                            cwd=working_dir,
                            shell=True)
