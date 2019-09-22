@@ -1,9 +1,0 @@
-channels:
-- conda-forge
-dependencies:
-- python
-- lammps
-- jupyter
-- nbconvert 
-- pyiron 
-- papermill
