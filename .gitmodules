@@ -1,0 +1,3 @@
+[submodule "protocol/phonons"]
+	path = protocol/phonons
+	url = https://github.com/thermopot/phonons-protocol

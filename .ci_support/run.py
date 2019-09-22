@@ -38,11 +38,11 @@ def get_list_of_protocols(protocol_path):
     for proc in os.listdir(protocol_path):
         proc_dir = os.path.abspath(os.path.join(protocol_path, proc))
         proc_dict = {}
-        for f in os.listdir(proc_dir): 
+        for f in os.listdir(os.path.join(proc_dir, 'scripts')): 
             if 'script.ipynb' == f: 
-                proc_dict['script'] = os.path.join(proc_dir, f)
+                proc_dict['script'] = os.path.join(proc_dir, 'scripts', f)
             elif 'plot.ipynb' == f:
-                proc_dict['plot'] = os.path.join(proc_dir, f)
+                proc_dict['plot'] = os.path.join(proc_dir, 'scripts', f)
         if len(proc_dict) > 0: 
             proc_lst[proc] = proc_dict
     return proc_lst
@@ -61,17 +61,13 @@ def apply_protocol(element, pot, proc, working_dir):
     with open(os.path.join(working_dir, 'input.json'), 'w') as f:
         json.dump(input_dict, f)
     script = proc['script']
-    shutil.copyfile(script, os.path.join(working_dir, os.path.basename(script)))
-    script_output = get_script_output(script=script)
-    subprocess.check_output('papermill "' + os.path.basename(script) + '" "' + os.path.basename(script_output) + '" -k "python3" -p input_file "input.json" -p output_file "output.json"',
-                            cwd=working_dir, 
-                            shell=True)
-    script = proc['plot']
-    shutil.copyfile(script, os.path.join(working_dir, os.path.basename(script)))
-    script_output = get_script_output(script=script)
-    subprocess.check_output('papermill "' + os.path.basename(script) + '" "' + os.path.basename(script_output) + '" -k "python3" -p input_file "output.json"',
-                            cwd=working_dir,    
-                            shell=True)
+    script_directory = os.path.dirname(script)
+    shutil.copytree(os.path.join(script_directory, '..', 'envs'), os.path.join(working_dir, 'envs'))
+    shutil.copytree(os.path.join(script_directory, '..', 'scripts'), os.path.join(working_dir, 'scripts'))
+    shutil.copyfile(os.path.join(script_directory, '..', 'Snakefile'), os.path.join(working_dir, 'Snakefile'))
+    subprocess.check_output("snakemake --use-conda",
+                           cwd=working_dir,
+                           shell=True)
 
 
 for pot in get_list_of_potentials(potential_path=potential_path):
