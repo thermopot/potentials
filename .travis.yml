@@ -13,6 +13,7 @@ matrix:
         - conda config --set always_yes yes --set changeps1 no
         - conda update -q conda
         - conda init bash
+        - source ~/.bashrc
         - conda install -y -c conda-forge jinja2
         - git config --global user.email "${GH_EMAIL}"
         - git config --global user.name "${GH_USER}"
