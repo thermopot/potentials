@@ -30,7 +30,6 @@ def get_list_of_potentials(potential_path):
             for f in pot_dict['filename']:
                 shutil.copyfile(f, os.path.join(database_path, pot, os.path.basename(f))) 
             pot_lst.append(pot_dict)
-    print("list potentials: ", pot_lst)
     return pot_lst
 
 
@@ -46,7 +45,6 @@ def get_list_of_protocols(protocol_path):
                 proc_dict['plot'] = os.path.join(proc_dir, 'scripts', f)
         if len(proc_dict) > 0: 
             proc_lst[proc] = proc_dict
-    print("list protocols: ", proc_lst)
     return proc_lst
 
 
@@ -67,7 +65,6 @@ def apply_protocol(element, pot, proc, working_dir):
     shutil.copytree(os.path.join(script_directory, '..', 'envs'), os.path.join(working_dir, 'envs'))
     shutil.copytree(os.path.join(script_directory, '..', 'scripts'), os.path.join(working_dir, 'scripts'))
     shutil.copyfile(os.path.join(script_directory, '..', 'Snakefile'), os.path.join(working_dir, 'Snakefile'))
-    print(os.listdir(working_dir))
     subprocess.check_output("snakemake --use-conda",
                            cwd=working_dir,
                            shell=True)
